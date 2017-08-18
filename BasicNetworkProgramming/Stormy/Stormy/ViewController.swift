@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentSummaryLabel: UILabel!
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    fileprivate let darkSkyApiKey = //insert API KEY HERE
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +28,15 @@ class ViewController: UIViewController {
         let currentWeatherViewModel = CurrentWeatherViewModel(model: currentWeather)
         
         displayWeather(using: currentWeatherViewModel)
+        
+        let base = URL(string: "https://api.darksky.net/forecast/\(darkSkyApiKey)/")
+        let forecastURL = URL(string: "37.8267,-122.4233", relativeTo: base)
+    
+        let weatherData = try! Data(contentsOf: forecastURL!)
+        print(weatherData as NSData)
+        
+        let json = try! JSONSerialization.jsonObject(with: weatherData, options: [])
+        print(json)
     }
 
     override func didReceiveMemoryWarning() {
